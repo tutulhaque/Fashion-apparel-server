@@ -43,6 +43,26 @@ async function run() {
       const result = await brandCollection.insertOne(newBrand);
       res.send(result);
   })
+  // Product Query
+  app.get('/products', async(req,res) => {
+    const cursor = productCollection.find();
+    const result = await cursor.toArray();
+    res.send(result);
+})
+app.get('/product/:id', async(req,res)=> {
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)}
+    const result = await productCollection.findOne(query);
+    res.send(result);
+
+})
+
+app.post('/products', async (req, res) => {
+    const newBrand = req.body;
+    console.log(newBrand);
+    const result = await productCollection.insertOne(newBrand);
+    res.send(result);
+})
 
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
